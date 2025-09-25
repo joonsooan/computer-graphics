@@ -40,6 +40,8 @@ let axes = new Axes(gl, 0.85); // x, y axes 그려주는 object (see util.js)
 // 모든 code를 이 listener 안에 넣는 것은 mouse click event를 원활하게 처리하기 위해서임
 // mouse input을 사용할 때 이와 같이 main을 call 한다.
 
+// 이벤트들이 발생하고 실행된 이후에 main을 실행함
+
 document.addEventListener("DOMContentLoaded", () => {
   if (isInitialized) {
     // true인 경우는 main이 이미 실행되었다는 뜻이므로 다시 실행하지 않음
