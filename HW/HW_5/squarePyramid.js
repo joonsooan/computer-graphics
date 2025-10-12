@@ -17,7 +17,7 @@ export class SquarePyramid {
     const normalFront = [0, n_norm, n_norm];
     const normalRight = [n_norm, n_norm, 0];
     const normalBack = [0, n_norm, -n_norm];
-    const normalLeft = [-n_norm, n_norm, 0]; // 1) Vertex positions (4 for base + 4 * 3 for sides = 16 vertices)
+    const normalLeft = [-n_norm, n_norm, 0];
 
     this.vertices = new Float32Array([
       // Base (v0, v3, v2, v1) - Indices 0, 1, 2, 3
@@ -41,7 +41,7 @@ export class SquarePyramid {
       ...v2,
       ...v1,
       ...v4,
-    ]); // 3) Vertex Normals (Flat Shading: all vertices in a face share the same normal)
+    ]);
 
     this.normals = new Float32Array([
       // Base (4 verts)
@@ -61,16 +61,14 @@ export class SquarePyramid {
       ...normalLeft,
       ...normalLeft,
       ...normalLeft,
-    ]); // 4) Vertex Colors (Flat Shading: all vertices in a face share the same color)
+    ]);
 
     if (options.color) {
-      // If color option is provided, set all vertices to that color
       this.colors = new Float32Array(16 * 4);
       for (let i = 0; i < 16 * 4; i += 4) {
         this.colors.set(options.color, i);
       }
     } else {
-      // Default colors for each face
       this.colors = new Float32Array([
         // Base (v0, v3, v2, v1) - White
         1,
@@ -138,7 +136,7 @@ export class SquarePyramid {
         0,
         1,
       ]);
-    } // 5) Vertex Texture Coordinates
+    }
 
     this.texCoords = new Float32Array([
       // Base (v0(1,1), v3(1,0), v2(0,0), v1(0,1))
@@ -204,31 +202,20 @@ export class SquarePyramid {
       13,
       14,
       15, // Using vertex array indices 13, 14, 15
-    ]); // Unlike a cube, smoothing normals (vertexNormals) for a pyramid is less common // and often gives undesirable results. We will primarily use the flat/face normals. // For completeness, the logic from Cube.js is kept but simplified as face normals are preferred.
+    ]);
 
     this.faceNormals = new Float32Array(this.normals);
-    this.vertexNormals = new Float32Array(this.normals); // Simplified: start with flat normals // The `sameVertices` array and averaging logic from Cube.js for vertex normals // is omitted here as it's complex for a pyramid and usually not used. // If smooth shading is required, the averaging logic would need a more complex // setup to find all duplicate base and apex vertices.
+    this.vertexNormals = new Float32Array(this.normals);
 
     this.initBuffers();
   }
-  /**
-   * Switches to using face normals (flat shading) for the geometry.
-   */
 
   copyFaceNormalsToNormals() {
-    // In this simplified Pyramid class, 'normals' is already 'faceNormals'
     this.normals.set(this.faceNormals);
     this.updateNormals();
   }
-  /**
-   * Switches to using vertex normals (smooth shading) for the geometry.
-   * Note: Smooth shading is complex for a pyramid and requires proper
-   * averaging of face normals at shared vertices (omitted here for simplicity).
-   */
 
   copyVertexNormalsToNormals() {
-    // This is a placeholder. For actual smooth shading, vertexNormals
-    // must be calculated by averaging the normals of faces sharing a vertex.
     this.normals.set(this.vertexNormals);
     this.updateNormals();
   }

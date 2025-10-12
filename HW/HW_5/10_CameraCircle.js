@@ -8,8 +8,8 @@
 - The camera is always looking at the origin.
 ---------------------------------------------------------------------------*/
 
-import { resizeAspectRatio, Axes } from "../../util/util.js";
-import { Shader, readShaderFile } from "../../util/shader.js";
+import { resizeAspectRatio, Axes } from "./util.js";
+import { Shader, readShaderFile } from "./shader.js";
 import { SquarePyramid } from "./squarePyramid.js";
 
 const canvas = document.getElementById("glCanvas");
@@ -106,14 +106,12 @@ function render() {
     vec3.fromValues(0, 1, 0)
   ); // up vector
 
-  // drawing the pyramid
-  shader.use(); // using the pyramid's shader
+  shader.use();
   shader.setMat4("u_model", modelMatrix);
   shader.setMat4("u_view", viewMatrix);
   shader.setMat4("u_projection", projMatrix);
   pyramid.draw(shader);
 
-  // drawing the axes (using the axes's shader)
   axes.draw(viewMatrix, projMatrix);
 
   requestAnimationFrame(render);
@@ -136,10 +134,8 @@ async function main() {
       100.0 // far
     );
 
-    // starting time (global variable) for animation
     startTime = lastFrameTime = Date.now();
 
-    // call the render function the first time for animation
     requestAnimationFrame(render);
 
     return true;
